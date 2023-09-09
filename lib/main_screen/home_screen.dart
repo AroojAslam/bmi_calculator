@@ -8,14 +8,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  double _selectedAge = 1;
+ int age = 50;
   double bmi=0;
-  double _selectedWeight = 50;
-  TextEditingController _weightController = TextEditingController();
+  int weight = 70;
+  int height = 180;
+ void calculateBMI() {
+   double Weight = double.parse(weight.toString());
+   double Height = double.parse(height.toString()) / 100; // Convert height to meters
+   double result = Weight / (Height * Height);
+   setState(() {
+     bmi = result;
+   });
+ }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).canvasColor ,
       appBar: AppBar(
         title: Text('BMI Calculator'),
       ),
@@ -25,38 +34,52 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 20),
-              Text(
-                'Enter Weight (kg)',
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-              ),
-              Padding(
-                padding: EdgeInsets.all(16.0),
-                child: TextField(
-                  controller: _weightController,
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                    labelText: 'Weight (kg)',
-                    border: OutlineInputBorder(),
-                  ),
+            const  Text('Select your height and Weight'),
+              SizedBox(height: 20),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(color: Theme.of(context).primaryColor.withOpacity(0.05),
+                border: Border.all(color:Theme.of(context).primaryColor.withOpacity(0.7),
+                    width: 2),
+                borderRadius: BorderRadius.circular(20),
+
+                ),
+                child: Column(
+                  children: [
+                  const  SizedBox(height: 10),
+                    Text(
+                      'Height : $height cm',
+                    ),
+                    Slider(
+
+                      value: height.toDouble(),
+                      min: 120,
+                      max: 220,
+                      onChanged: (double newValue) {
+                        setState(() {
+                          height = newValue.round();
+                        });
+                      },
+                    ),
+                const SizedBox(height: 10),
+                    Text(
+                      'Weight : $weight KG',
+                    ),
+                    Slider(
+                      value: weight.toDouble(),
+                      min: 20,
+                      max: 200,
+                      onChanged: (double newValue) {
+                        setState(() {
+                          weight = newValue.round();
+                        });
+                      },
+                    ),
+                  const  SizedBox(height: 20),
+                  ]
                 ),
               ),
-              SizedBox(height: 20),
-            const  Text(
-                'Select Age',
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-              ),
-              Slider(
-                value: _selectedAge,
-                max: 150,
-                divisions: 149,
-                label: _selectedAge.round().toString(),
-                onChanged: (double value) {
-                  setState(() {
-                    _selectedAge = value;
-                  });
-                },
-              ),
-              SizedBox(height: 20),
+
 
               Text(
                 'Your BMI is:',
@@ -68,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               ElevatedButton(
                 onPressed: () {
-
+                  calculateBMI();
                 },
                 child: Text('Calculate BMI'),
               ),
