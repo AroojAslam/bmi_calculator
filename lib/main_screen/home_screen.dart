@@ -1,6 +1,4 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:kdgaugeview/kdgaugeview.dart';
 import 'package:provider/provider.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import '../bmi_provider.dart';
